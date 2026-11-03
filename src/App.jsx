@@ -9,6 +9,7 @@ function App () {
   const [ fromAmount, setFromAmount ] = useState(0)
   const [ toAmount, setToAmount ] = useState(0)
   const [ error, setError ] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const tempList = async () => {
@@ -31,6 +32,7 @@ function App () {
 
     try { 
       setError('')
+      setIsLoading(true)
 
       const result = await getConversionRate(
         fromCurrency,
@@ -43,6 +45,8 @@ function App () {
     } catch (error) {
       console.error('Conversion failure: ', error)
       setError(error.message || 'Conversion ')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -56,7 +60,7 @@ function App () {
           </div>
 
           <div className='col-start-2 col-end-3 justify-self-end'>
-            <div className='text-l font-bold'>From :</div>
+            <label className='text-l font-bold' htmlFor="From :">From :</label>
           </div>
 
           <div className='col-start-3 col-end-6'>
@@ -81,7 +85,7 @@ function App () {
           </div>
 
           <div className='col-start-2 col-end-3 justify-self-end'>
-            <div className='text-l font-bold'>To :</div>
+            <label className='text-l font-bold' htmlFor="To :">To :</label>
           </div>
 
           <div className='col-start-3 col-end-6'>
@@ -105,7 +109,7 @@ function App () {
           </div>
 
           <div className='col-start-3 col-end-4 justify-self-start'>
-            <div className='text-l font-bold'>Enter amount :</div>
+            <label className='text-l font-bold' htmlFor="To :">Enter amount :</label>
           </div>
 
           <div className='col-start-4 col-end-7 justify-self-start pl-4'>
@@ -118,7 +122,7 @@ function App () {
                 setFromAmount(e.target.value)
                 setToAmount(0)
               }}
-              className='text-l'
+              className='text-l border-2'
             />
           </div>
 
@@ -126,8 +130,9 @@ function App () {
             <button
               className='text-xl font-bold border-2 p-1'
               onClick={handleConvert}
+              disabled={isLoading}
             >
-              Convert now
+              {isLoading ? 'Converting... ' : 'Convert now'}
             </button>
           </div>
 
