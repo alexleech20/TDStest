@@ -1,120 +1,148 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
+import { getExchangeList, getConversionRate } from './services/getServices'
 
-function App() {
-  const [count, setCount] = useState(0)
+function App () {
+  const [ fromCurrency, setFromCurrency ] = useState('Select')
+  const [ toCurrency, setToCurrency ] = useState('Select')
+  const [ currencyList, setCurrencyList ] = useState([])
+  const [ fromAmount, setFromAmount ] = useState(0)
+  const [ toAmount, setToAmount ] = useState(0)
+  const [ error, setError ] = useState('')
+
+  useEffect(() => {
+    const tempList = async () => {
+      try {
+        const result = await getExchangeList()
+        setCurrencyList(result)
+      } catch (error) {
+        console.error('Error whilst getting currencies: ', error)
+        setError('Unable to load currencies.')
+      }
+    }
+    tempList()
+  }, [])
+
+  const handleConvert = async () => {
+    if (fromCurrency === 'Select' || toCurrency === 'Select' || Number(fromAmount) <= 0) {
+      setError('Please select both currencies and enter a valid figure.')
+      return;
+  }
+
+    try { 
+      setError('')
+
+      const result = await getConversionRate(
+        fromCurrency,
+        toCurrency,
+        fromAmount
+      )
+      console.log(result);
+
+      setToAmount(result)
+    } catch (error) {
+      console.error('Conversion failure: ', error)
+      setError(error.message || 'Conversion ')
+    }
+  }
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      <div className='w-l py-7 font-outfit rounded shadow-xl'>
+        <div className='grid grid-cols-6 gap-y-5'>
 
-      <div className="ticks"></div>
+          <div className='col-span-4 col-start-2 pb-5 justify-self-center'>
+            <h1>Currency converter app</h1>
+          </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          <div className='col-start-2 col-end-3 justify-self-end'>
+            <div className='text-l font-bold'>From :</div>
+          </div>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+          <div className='col-start-3 col-end-6'>
+            <select
+              id='fromCurrency'
+              value={fromCurrency}
+              onChange={e => {
+                setFromCurrency(e.target.value)
+                setToAmount(0)
+              }}
+              className='text-l'
+            >
+              <option value='Select'>Select currency</option>
+
+              {currencyList.map((currency, index) => (
+                <option key={index} value={currency.currencyCode}>
+                  {/* beware not all currencies will have an appropriate symbol attached */}
+                  ({currency.currencySymbol}) - {currency.currencyName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className='col-start-2 col-end-3 justify-self-end'>
+            <div className='text-l font-bold'>To :</div>
+          </div>
+
+          <div className='col-start-3 col-end-6'>
+            <select
+              id='toCurrency'
+              value={toCurrency}
+              onChange={e => {
+                setToCurrency(e.target.value)
+                setToAmount(0)
+              }}
+              className='text-l'
+            >
+              <option value='Select'>Select currency</option>
+
+              {currencyList.map((currency, index) => (
+                <option key={index} value={currency.currencyCode}>
+                  ({currency.currencySymbol}) - {currency.currencyName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className='col-start-3 col-end-4 justify-self-start'>
+            <div className='text-l font-bold'>Enter amount :</div>
+          </div>
+
+          <div className='col-start-4 col-end-7 justify-self-start pl-4'>
+            <input
+              type='number'
+              min='0'
+              placeholder='Enter Amount'
+              value={fromAmount}
+              onChange={e => {
+                setFromAmount(e.target.value)
+                setToAmount(0)
+              }}
+              className='text-l'
+            />
+          </div>
+
+          <div className='col-span-4 col-start-2'>
+            <button
+              className='text-xl font-bold border-2 p-1'
+              onClick={handleConvert}
+            >
+              Convert now
+            </button>
+          </div>
+
+          <div className='col-span-4 col-start-2'>
+            <p className='text-red-500'>{error}</p>
+
+            <p className='text-2xl font-bold'>
+              {toAmount !== 0
+                ? `${fromAmount} ${fromCurrency} = ${toAmount} ${toCurrency}`
+                : ''}
+            </p>
+          </div>
+
+        </div>
+      </div>
     </>
   )
 }
