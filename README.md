@@ -18,7 +18,6 @@ The API will not work and the app may error, please use the following steps to r
 
 ## Given more time I would've made the following changes: 
 
-- A user is currently able to select 2 of the same currencies, I should add a method to prevent duplication
 - Made it more visually appealing via more in depth tailwind styling
 - Currently, the app is keyboard accessible out of the box. But, screenreaders may have a hard time due to 
 lack of aria tags and labels etc, so I would add those in future.
