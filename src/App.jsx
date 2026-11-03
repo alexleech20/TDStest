@@ -6,10 +6,10 @@ function App () {
   const [ fromCurrency, setFromCurrency ] = useState('')
   const [ toCurrency, setToCurrency ] = useState('')
   const [ currencyList, setCurrencyList ] = useState([])
-  const [ fromAmount, setFromAmount ] = useState(0)
-  const [ toAmount, setToAmount ] = useState(0)
+  const [ fromAmount, setFromAmount ] = useState('')
+  const [ toAmount, setToAmount ] = useState('')
   const [ error, setError ] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [ isLoading, setIsLoading ] = useState(false)
 
   useEffect(() => {
     const tempList = async () => {
@@ -27,10 +27,10 @@ function App () {
   const handleConvert = async () => {
     if (!fromCurrency || !toCurrency || fromAmount <= 0) {
       setError('Please select both currencies and enter a valid figure.')
-      return;
-  }
+      return
+    }
 
-    try { 
+    try {
       setError('')
       setIsLoading(true)
 
@@ -39,16 +39,22 @@ function App () {
         toCurrency,
         fromAmount
       )
-      console.log(result);
 
       setToAmount(result)
     } catch (error) {
       console.error('Conversion failure: ', error)
-      setError(error.message || 'Conversion ')
+      setError('Conversion failed. Please try again.')
     } finally {
       setIsLoading(false)
     }
   }
+
+  // Built once and reused in both select boxes
+  const currencyOptions = currencyList.map(currency => (
+    <option key={currency.currencyCode} value={currency.currencyCode}>
+      {currency.currencyCode} - {currency.currencyName}
+    </option>
+  ))
 
   return (
     <>
@@ -60,7 +66,7 @@ function App () {
           </div>
 
           <div className='col-start-2 col-end-3 justify-self-end'>
-            <label className='text-l font-bold' htmlFor="From :">From :</label>
+            <label className='text-l font-bold' htmlFor='fromCurrency'>From :</label>
           </div>
 
           <div className='col-start-3 col-end-6'>
@@ -69,23 +75,17 @@ function App () {
               value={fromCurrency}
               onChange={e => {
                 setFromCurrency(e.target.value)
-                setToAmount(0)
+                setToAmount('')
               }}
               className='text-l'
             >
               <option value=''>Select currency</option>
-
-              {currencyList.map((currency, index) => (
-                <option key={index} value={currency.currencyCode}>
-                  {/* beware not all currencies will have an appropriate symbol attached */}
-                  ({currency.currencySymbol}) - {currency.currencyName}
-                </option>
-              ))}
+              {currencyOptions}
             </select>
           </div>
 
           <div className='col-start-2 col-end-3 justify-self-end'>
-            <label className='text-l font-bold' htmlFor="To :">To :</label>
+            <label className='text-l font-bold' htmlFor='toCurrency'>To :</label>
           </div>
 
           <div className='col-start-3 col-end-6'>
@@ -94,33 +94,29 @@ function App () {
               value={toCurrency}
               onChange={e => {
                 setToCurrency(e.target.value)
-                setToAmount(0)
+                setToAmount('')
               }}
               className='text-l'
             >
               <option value=''>Select currency</option>
-
-              {currencyList.map((currency, index) => (
-                <option key={index} value={currency.currencyCode}>
-                  ({currency.currencySymbol}) - {currency.currencyName}
-                </option>
-              ))}
+              {currencyOptions}
             </select>
           </div>
 
           <div className='col-start-3 col-end-4 justify-self-start'>
-            <label className='text-l font-bold' htmlFor="To :">Enter amount :</label>
+            <label className='text-l font-bold' htmlFor='fromAmount'>Enter amount :</label>
           </div>
 
           <div className='col-start-4 col-end-7 justify-self-start pl-4'>
             <input
+              id='fromAmount'
               type='number'
               min='0'
               placeholder='Enter Amount'
               value={fromAmount}
               onChange={e => {
                 setFromAmount(e.target.value)
-                setToAmount(0)
+                setToAmount('')
               }}
               className='text-l border-2'
             />
@@ -139,11 +135,11 @@ function App () {
           <div className='col-span-4 col-start-2'>
             <p className='text-red-500'>{error}</p>
 
-            <p className='text-2xl font-bold'>
-              {toAmount !== 0
-                ? `${fromAmount} ${fromCurrency} = ${toAmount} ${toCurrency}`
-                : ''}
-            </p>
+            {toAmount !== '' && (
+              <p className='text-2xl font-bold'>
+                {fromAmount} {fromCurrency} = {toAmount} {toCurrency}
+              </p>
+            )}
           </div>
 
         </div>
@@ -151,5 +147,3 @@ function App () {
     </>
   )
 }
-
-export default App

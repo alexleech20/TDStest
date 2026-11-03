@@ -18,12 +18,12 @@ The API will not work and the app may error, please use the following steps to r
 
 ## Given more time I would've made the following changes: 
 
+- A user is currently able to select 2 of the same currencies, I should add a method to prevent duplication
 - Made it more visually appealing via more in depth tailwind styling
 - Currently, the app is keyboard accessible out of the box. But, screenreaders may have a hard time due to 
 lack of aria tags and labels etc, so I would add those in future.
 - I did also notice that the the hover effect on the 'convert' button wasnt working as intended, the 
 cursor would not change state on hover of the button, this would need resolved.
-- A user is currently able to select 2 of the same currencies,
 - Due to wanting to get the functionality nailed down, it doesnt perform very well on mobile, and although 
 I should have developed mobile first, I couldnt spend too much time on this sadly.
 
