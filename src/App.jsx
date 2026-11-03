@@ -3,8 +3,8 @@ import './App.css'
 import { getExchangeList, getConversionRate } from './services/getServices'
 
 function App () {
-  const [ fromCurrency, setFromCurrency ] = useState('Select')
-  const [ toCurrency, setToCurrency ] = useState('Select')
+  const [ fromCurrency, setFromCurrency ] = useState('')
+  const [ toCurrency, setToCurrency ] = useState('')
   const [ currencyList, setCurrencyList ] = useState([])
   const [ fromAmount, setFromAmount ] = useState(0)
   const [ toAmount, setToAmount ] = useState(0)
@@ -24,7 +24,7 @@ function App () {
   }, [])
 
   const handleConvert = async () => {
-    if (fromCurrency === 'Select' || toCurrency === 'Select' || Number(fromAmount) <= 0) {
+    if (!fromCurrency || !toCurrency || fromAmount <= 0) {
       setError('Please select both currencies and enter a valid figure.')
       return;
   }
@@ -69,7 +69,7 @@ function App () {
               }}
               className='text-l'
             >
-              <option value='Select'>Select currency</option>
+              <option value=''>Select currency</option>
 
               {currencyList.map((currency, index) => (
                 <option key={index} value={currency.currencyCode}>
@@ -94,7 +94,7 @@ function App () {
               }}
               className='text-l'
             >
-              <option value='Select'>Select currency</option>
+              <option value=''>Select currency</option>
 
               {currencyList.map((currency, index) => (
                 <option key={index} value={currency.currencyCode}>
