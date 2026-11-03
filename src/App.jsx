@@ -124,7 +124,7 @@ function App () {
 
           <div className='col-span-4 col-start-2'>
             <button
-              className='text-xl font-bold border-2 p-1'
+              className='text-xl font-bold border-2 p-1 rounded-lg'
               onClick={handleConvert}
               disabled={isLoading}
             >
@@ -147,3 +147,5 @@ function App () {
     </>
   )
 }
+
+export default App
