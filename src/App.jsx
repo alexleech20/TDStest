@@ -18,6 +18,8 @@ function App() {
       } catch (error) {
         console.error("Error whilst getting currencies: ", error);
         setError("Unable to load currencies.");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCurrencies();
@@ -79,7 +81,9 @@ function App() {
               }}
               className="text-l"
             >
-              <option value="">Select currency</option>
+            <option value="">
+              {isLoading ? "Loading currencies ..." : "Select currency"}
+            </option>
               {currencyOptions}
             </select>
           </div>
@@ -100,7 +104,9 @@ function App() {
               }}
               className="text-l"
             >
-              <option value="">Select currency</option>
+            <option value="">
+              {isLoading ? "Loading currencies ..." : "Select currency"}
+            </option>
               {currencyOptions}
             </select>
           </div>
