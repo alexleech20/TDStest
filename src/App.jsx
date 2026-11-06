@@ -12,7 +12,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const tempList = async () => {
+    const fetchCurrencies = async () => {
       try {
         const result = await getExchangeList();
         setCurrencyList(result);
@@ -21,7 +21,7 @@ function App() {
         setError("Unable to load currencies.");
       }
     };
-    tempList();
+    fetchCurrencies();
   }, []);
 
   const handleConvert = async () => {
