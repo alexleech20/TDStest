@@ -14,6 +14,7 @@ function App() {
   useEffect(() => {
     const fetchCurrencies = async () => {
       try {
+        setIsLoading(true)
         setCurrencyList(await getExchangeList());
       } catch (error) {
         console.error("Error whilst getting currencies: ", error);
