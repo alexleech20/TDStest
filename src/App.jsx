@@ -33,16 +33,16 @@ function App() {
   ));
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 font-outfit">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 space-y-5">
         <h1 className="text-2xl font-bold text-center text-slate-800">
           Currency converter
         </h1>
 
-        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200">
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
           <label
             htmlFor="fromCurrency"
-            className="block text-xs font-semibold tracking-wide text-slate-500 mb-2"
+            className="block text-xs font-semibold text-slate-500 mb-2"
           >
             From
           </label>
