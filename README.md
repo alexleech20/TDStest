@@ -18,10 +18,14 @@ The app uses the CurrencyBeacon API, which needs a free API token. I haven’t i
 
 ## Things I believe I did well
 
-- Attempted to add as much aria labels, tags and lives as needed
-- Split the components into separate hooks and services, not all in app.jsx
-- Visually, isnt fantastic, but its my first time properly playing round with tailwind as opposed to a ui library
-- No errors, no bugs (that I've managed to find, albeit a simple app)
+- Attempted to add as much aria labels, tags and lives as needed.
+- Keyboard accessible.
+- Split the components into separate hooks and services, not all in app.jsx.
+- No errors, no bugs (that I've managed to find, albeit a simple app).
+- For the first time playing round with tailwind as opposed to ui libraries I believe it looks OK.
+- Good error handling and fallbacks. Example, loading states on conversion when calling the API.
+- Easy for users to understand how the app works.
+- Works well on mobile.
 
 
 ## Given more time I would've made the following changes: 
