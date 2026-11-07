@@ -1,55 +1,29 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
-import { getExchangeList, getConversionRate } from "./services/getServices";
+import useCurrencies from "./hooks/useCurrencies";
+import useConversion from "./hooks/useConversion";
 
 function App() {
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
-  const [currencyList, setCurrencyList] = useState([]);
   const [fromAmount, setFromAmount] = useState("");
-  const [toAmount, setToAmount] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [toAmount, setToAmount] = useState("");
 
-  useEffect(() => {
-    const fetchCurrencies = async () => {
-      try {
-        setIsLoading(true)
-        setCurrencyList(await getExchangeList());
-      } catch (error) {
-        console.error("Error whilst getting currencies: ", error);
-        setError("Unable to load currencies.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchCurrencies();
-  }, []);
+  const {
+    currencyList,
+    isLoading: isListLoading,
+    error: listError
+  } = useCurrencies();
 
-  const handleConvert = async () => {
-    if (!fromCurrency || !toCurrency || fromAmount <= 0) {
-      setError("Please select both currencies and enter a valid figure.");
-      return;
-    }
+  const { 
+    result,
+    isConverting,
+    error: convertError,
+    convert,
+    clearResult
+  } = useConversion();
 
-    try {
-      setError("");
-      setIsLoading(true);
-
-      const result = await getConversionRate(
-        fromCurrency,
-        toCurrency,
-        fromAmount,
-      );
-
-      setToAmount(result);
-    } catch (error) {
-      console.error("Conversion failure: ", error);
-      setError("Conversion failed. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const error = listError || convertError;
 
   // Built once and reused in both select boxes
   const currencyOptions = currencyList.map((currency) => (
@@ -59,102 +33,101 @@ function App() {
   ));
 
   return (
-    <>
-      <div className="w-l py-7 font-outfit rounded shadow-xl">
-        <div className="grid grid-cols-6 gap-y-5">
-          <div className="col-span-4 col-start-2 pb-5 justify-self-center">
-            <h1>Currency converter app</h1>
-          </div>
+    <div className="min-h-screen flex items-center justify-center p-4 font-outfit">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 space-y-5">
+        <h1 className="text-2xl font-bold text-center text-slate-800">
+          Currency converter
+        </h1>
 
-          <div className="col-start-2 col-end-3 justify-self-end">
-            <label className="text-l font-bold" htmlFor="fromCurrency">
-              From :
-            </label>
-          </div>
-
-          <div className="col-start-3 col-end-6">
-            <select
-              id="fromCurrency"
-              value={fromCurrency}
-              onChange={(e) => {
-                setFromCurrency(e.target.value);
-                setToAmount("");
-              }}
-              className="text-l"
-            >
-            <option value="">
-              {isLoading ? "Loading currencies ..." : "Select currency"}
-            </option>
-              {currencyOptions}
-            </select>
-          </div>
-
-          <div className="col-start-2 col-end-3 justify-self-end">
-            <label className="text-l font-bold" htmlFor="toCurrency">
-              To :
-            </label>
-          </div>
-
-          <div className="col-start-3 col-end-6">
-            <select
-              id="toCurrency"
-              value={toCurrency}
-              onChange={(e) => {
-                setToCurrency(e.target.value);
-                setToAmount("");
-              }}
-              className="text-l"
-            >
-            <option value="">
-              {isLoading ? "Loading currencies ..." : "Select currency"}
-            </option>
-              {currencyOptions}
-            </select>
-          </div>
-
-          <div className="col-start-3 col-end-4 justify-self-start">
-            <label className="text-l font-bold" htmlFor="fromAmount">
-              Enter amount :
-            </label>
-          </div>
-
-          <div className="col-start-4 col-end-7 justify-self-start pl-4">
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200">
+          <label
+            htmlFor="fromCurrency"
+            className="block text-xs font-semibold tracking-wide text-slate-500 mb-2"
+          >
+            From
+          </label>
+          <div className="flex items-center gap-3">
             <input
               id="fromAmount"
               type="number"
               min="0"
-              placeholder="Enter Amount"
+              placeholder="0.00"
+              aria-label="Amount to convert"
               value={fromAmount}
               onChange={(e) => {
                 setFromAmount(e.target.value);
-                setToAmount("");
+                clearResult();
               }}
-              className="text-l border-2"
+              className="w-1/2 bg-transparent text-right text-2xl font-semibold text-slate-800 placeholder-slate-300 focus:outline-none"
             />
-          </div>
-
-          <div className="col-span-4 col-start-2">
-            <button
-              className="text-xl font-bold border-2 p-1 rounded-lg"
-              onClick={handleConvert}
-              disabled={isLoading}
+            <select
+              id="fromCurrency"
+              value={fromCurrency}
+              disabled={isListLoading}
+              onChange={(e) => {
+                setFromCurrency(e.target.value);
+                clearResult;
+              }}
+              className="w-1/2 rounded-lg bg-white border border-slate-200 px-2 py-2 text-sm text-slate-700 focus:outline-none"
             >
-              {isLoading ? "Converting... " : "Convert now"}
-            </button>
-          </div>
-
-          <div className="col-span-4 col-start-2">
-            <p className="text-red-500">{error}</p>
-
-            {toAmount !== "" && (
-              <p className="text-2xl font-bold">
-                {fromAmount} {fromCurrency} = {toAmount} {toCurrency}
-              </p>
-            )}
+              <option value="">
+                {isListLoading ? "Loading currencies ..." : "Select currency"}
+              </option>
+              {currencyOptions}
+            </select>
           </div>
         </div>
+
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <label
+            htmlFor="toCurrency"
+            className="block text-xs font-semibold tracking-wide text-slate-500 mb-2"
+          >
+            To
+          </label>
+          <div className="flex items-center gap-3">
+            <input
+              type="text"
+              readOnly
+              aria-label="Converted amount"
+              placeholder="0.00"
+              value={result}
+              className="w-1/2 bg-transparent text-right text-2xl font-semibold text-indigo-600 placeholder-slate-300 focus:outline-none"
+            />
+            <select
+              id="toCurrency"
+              value={toCurrency}
+              disabled={isListLoading}
+              onChange={(e) => {
+                setToCurrency(e.target.value);
+                clearResult;
+              }}
+              className="w-1/2 rounded-lg bg-white border border-slate-200 px-2 py-2 text-sm text-slate-700 focus:outline-none"
+            >
+              <option value="">
+                {isListLoading ? "Loading currencies ..." : "Select currency"}
+              </option>
+              {currencyOptions}
+            </select>
+          </div>
+        </div>
+
+        <button
+          onClick={() => convert(fromCurrency, toCurrency, fromAmount)}
+          disabled={isListLoading || isConverting}
+          className="w-full rounded-xl bg-indigo-600 py-3 text-lg font-semibold text-white shadow hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition"
+        >
+          {isConverting ? "Converting... " : "Convert now"}
+        </button>
+
+        {error && (
+          <p role="alert" className="text-sm text-red-600 text-center">
+            {error}
+          </p>
+        )}
+
       </div>
-    </>
+    </div>
   );
 }
 
