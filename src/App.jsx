@@ -66,7 +66,7 @@ function App() {
               disabled={isListLoading}
               onChange={(e) => {
                 setFromCurrency(e.target.value);
-                clearResult;
+                clearResult();
               }}
               className="w-1/2 rounded-lg bg-white border border-slate-200 px-2 py-2 text-sm text-slate-700 focus:outline-none"
             >
@@ -100,7 +100,7 @@ function App() {
               disabled={isListLoading}
               onChange={(e) => {
                 setToCurrency(e.target.value);
-                clearResult;
+                clearResult();
               }}
               className="w-1/2 rounded-lg bg-white border border-slate-200 px-2 py-2 text-sm text-slate-700 focus:outline-none"
             >
