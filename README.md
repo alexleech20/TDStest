@@ -38,7 +38,20 @@ cursor would not change state on hover of the button, this would need resolved. 
 - Due to wanting to get the functionality nailed down, it doesnt perform very well on mobile, and although 
 I should have developed mobile first, I couldnt spend too much time on this sadly.
 - I would've had structured pull requests and code reviews between pushes to develop.
+- I could've added in a flag icon library, and assigned flags to currencies to make them easier for users to understand origins.
 
+## Problems I ran into 
+
+- I ran into issues with CORS fairly quickly, the issue was due to a vite dev proxy, if this was a production app it would need some sort of backend proxy adding also as this only works locally.
+- In all honesty, trying to work out how to make it look. I ended up leaning on Wise.com linked below for how it will look as originally when it was in plain HTML i was struggling for inspriation.
+- This was my second attempt at building this, as I needed it to be secure and I made the silly mistake of adding my API token to the repo (the previous iteration), so I had to restart and put my .env into the gitignore before my first commit.
+
+Inspiration: 
+
+I used the following to help me design/ problem solve.
+
+- https://wise.com/gb/currency-converter/
+- https://tailwindcss.com/
 
 ## This app consists of the following:
 
