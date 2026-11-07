@@ -37,6 +37,7 @@ lack of aria tags and labels etc, so I would add those in future.
 cursor would not change state on hover of the button, this would need resolved. One step I took to semi-remedy this was by adding a border around the button, since, it currently doesnt visually look like a button.
 - Due to wanting to get the functionality nailed down, it doesnt perform very well on mobile, and although 
 I should have developed mobile first, I couldnt spend too much time on this sadly.
+- I would've had structured pull requests and code reviews between pushes to develop.
 
 
 ## This app consists of the following:
