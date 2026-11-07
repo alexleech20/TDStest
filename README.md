@@ -2,19 +2,19 @@
 
 Due to the way the project is setup for security, you will need to provide your own API token in order for the application to function.
 
-## INCLUDE MORE SETUP INSTRUCTIONS PRIOR TO ENV SETUP
+## SETUP INSTRUCTIONS
 
-1. Clone the repository down locally, i will provide both a zip file and a link to the public github.
-2. Run 'npm install' from inside the project folder named 'react'
-3. Once complete, run 'npm run dev' to run the project locally.
+Requires node v22 (check with `node -v`)
 
-The API will not work and the app may error, please use the following steps to remedy:
+1. Clone the repository down locally or unzip the file, i will provide both a zip file and a link to the public github.
+2. check you are inside 'react' folder, `cd react`
+3. Run `npm install`
+4. Create the .env file (copy .env.example, then add your API token `VITE_API_TOKEN=your_token_here`)
+5. Once complete, run `npm run dev`
+6. API requests go through the vite dev proxy, to avoid errors you must use `npm run dev`
 
-1. Create a .env file on the same level as `src` and `public`
-2. Copy the 'VITE_API_TOKEN' variable from `.env.example` to `.env`, this is the only env variable used
-3. Please navigate to 'https://currencybeacon.com/account/dashboard' and grab your own API key
-4. Add your own API token to `.env`
-5. The app should now function without errors
+The app uses the CurrencyBeacon API, which needs a free API token. I haven’t included mine for security reasons, so you’ll need your own.
+
 
 ## Things I believe I did well
 
