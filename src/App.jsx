@@ -81,7 +81,7 @@ function App() {
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
           <label
             htmlFor="toCurrency"
-            className="block text-xs font-semibold tracking-wide text-slate-500 mb-2"
+            className="block text-xs font-semibold text-slate-500 mb-2"
           >
             To
           </label>

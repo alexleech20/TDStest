@@ -16,6 +16,12 @@ The API will not work and the app may error, please use the following steps to r
 4. Add your own API token to `.env`
 5. The app should now function without errors
 
+## Things I believe I did well
+
+- Attempted to add as much aria labels, tags and lives as needed
+- Split the components into separate hooks and services, not all in app.jsx
+- Visually, isnt fantastic, but its my first time properly playing round with tailwind as opposed to a ui library
+- No errors, no bugs (that I've managed to find, albeit a simple app)
 
 
 ## Given more time I would've made the following changes: 
