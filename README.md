@@ -21,7 +21,7 @@ The API will not work and the app may error, please use the following steps to r
 ## Given more time I would've made the following changes: 
 
 - Made it more visually appealing via more in depth tailwind styling
-- Currently, the app is keyboard accessible out of the box. But, screenreaders may have a hard time due to 
+- Attempting to split components rather than all in app.jsx. Creating a reusable card for currency would be my next step.
 lack of aria tags and labels etc, so I would add those in future.
 - I did also notice that the the hover effect on the 'convert' button wasnt working as intended, the 
 cursor would not change state on hover of the button, this would need resolved. One step I took to semi-remedy this was by adding a border around the button, since, it currently doesnt visually look like a button.
