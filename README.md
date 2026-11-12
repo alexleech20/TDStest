@@ -18,14 +18,15 @@ The app uses the CurrencyBeacon API, which needs a free API token. I haven’t i
 
 ## Things I believe I did well
 
-- Attempted to add as much aria labels, tags and lives as needed.
+- Attempted to add as much aria labels and tags as needed.
+- Good error handling and fallbacks. Example, loading states on conversion when calling the API & preventative measures for API duplicate calls.
 - Keyboard accessible.
 - Split the components into separate hooks and services, not all in app.jsx.
 - No errors, no bugs (that I've managed to find, albeit a simple app).
 - For the first time playing round with tailwind as opposed to ui libraries I believe it looks OK.
-- Good error handling and fallbacks. Example, loading states on conversion when calling the API.
 - Easy for users to understand how the app works.
 - Works well on mobile.
+- Passes linting and has a good lighthouse report on `npm run build` > `npm run preview`.
 
 
 ## Given more time I would've made the following changes: 
@@ -35,8 +36,6 @@ The app uses the CurrencyBeacon API, which needs a free API token. I haven’t i
 lack of aria tags and labels etc, so I would add those in future.
 - I did also notice that the the hover effect on the 'convert' button wasnt working as intended, the 
 cursor would not change state on hover of the button, this would need resolved. One step I took to semi-remedy this was by adding a border around the button, since, it currently doesnt visually look like a button.
-- Due to wanting to get the functionality nailed down, it doesnt perform very well on mobile, and although 
-I should have developed mobile first, I couldnt spend too much time on this sadly.
 - I would've had structured pull requests and code reviews between pushes to develop.
 - I could've added in a flag icon library, and assigned flags to currencies to make them easier for users to understand origins.
 
