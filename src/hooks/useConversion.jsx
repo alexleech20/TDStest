@@ -17,7 +17,7 @@ function useConversion() {
             setIsConverting(true);
             setResult(await getConversionRate(from, to, amount));
         } catch (err) {
-            console.error("Conversion failure: ", error);
+            console.error("Conversion failure: ", err);
             setError("Conversion failed. Please try again.");
         } finally {
             setIsConverting(false);
