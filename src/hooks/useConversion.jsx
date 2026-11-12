@@ -24,7 +24,10 @@ function useConversion() {
         }
     };
 
-    const clearResult = () => setResult("");
+    const clearResult = () => { 
+        setResult(""),
+        setError("")
+    };
 
     return { result, isConverting, error, convert, clearResult };
 }
