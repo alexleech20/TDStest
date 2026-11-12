@@ -114,10 +114,10 @@ function App() {
 
         <button
           onClick={() => convert(fromCurrency, toCurrency, fromAmount)}
-          disabled={isListLoading || isConverting}
+          disabled={isListLoading || isConverting || result !== ""}
           className="w-full rounded-xl bg-indigo-600 py-3 text-lg font-semibold text-white shadow hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition"
         >
-          {isConverting ? "Converting... " : "Convert now"}
+          {isConverting ? "Converting... " : result !== "" ? "Change a value to convert again" : "Convert now"}
         </button>
 
         {error && (
